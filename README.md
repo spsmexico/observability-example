@@ -1,5 +1,8 @@
 ### Demo
 
+![demo-despues drawio](https://user-images.githubusercontent.com/40581565/163064898-d2e35056-a6db-48fb-bbbb-719fad73822f.png)
+
+
 Este repositorio contiene un pequeño servicio python usando el framework Flask. Tiene 4 versiones ditintas y 1 servicio consumidor.
 
 1 - Sin instrumentación (APM)
