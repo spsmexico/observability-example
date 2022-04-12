@@ -1,35 +1,35 @@
 ### Overview
 
-This repo contains a small python service using flask. The service is available in 4 stages. 
+Este repositorio contiene un pequeño servicio python usando el framework Flask. Tiene 4 versiones ditintas y 1 servicio consumidor.
 
-1 - without any instrumentation
+1 - Sin instrumentación (APM)
 
-2 - with basic Elastic APM instrumentation
+2 - Con instrumentación básica (APM)
 
-3 - with a more advanced Elastic APM instrumentation
+3 - Instrumentación avanzada (APM)
 
-4 - with full instrumentation and ECS logging
+4 - Instrumentación avanzada (APM) y logs en formato ECS (logger).
 
 ### Requirements
-Redis is required for the services to run.
+Tener docker instaldo y levantar una instancia de redis:
 
 ```
 docker run -p 6379:6379 -d redis
 ```
 
 
-A Python venv is recommended:
+Es recomendable un entorno virtual pero es posible saltarse este paso:
 ```
 virtualenv -p python3 .venv
 source .venv/bin/activate
 ```
 
-Install dependencies:
+Instalar dependencias:
 ```
 pip install -r requirements.txt
 ```
 
-Before running the services, make sure you provide the following endpoints and credentials:
+Asegurate de tener los siguientes datos de tu instancia de Elastic:
 ```
 APM:
 server_url
@@ -38,35 +38,62 @@ token
 Filebeat: 
 cloud.id: deploymentname:secret123
 cloud.auth: elastic:secret123
-or 
+ó
 output.elasticsearch:
   hosts: ["localhost:9200"]
   username: "elastic"
   password: "changeme"
 ```
 
-You can download Filebeat here: https://www.elastic.co/downloads/beats/filebeat
+Tener instalado Filebeat. Puedes descargar filebeat de aquí: https://www.elastic.co/downloads/beats/filebeat
 
-APM-Server, Elasticsearch and Kibana also need to be running. You can find more information about the Elastic Stack [here](https://www.elastic.co/elastic-stack/)
+APM-Server, Elasticsearch y Kibana se deben estar ejecutando. Puedes encontrar más información [aquí](https://www.elastic.co/elastic-stack/) u obtener una prueba gratuita de [Elastic Cloud](https://www.elastic.co/es/cloud/)
 
-### Running the Python Services
-To run the python services, execute the following command for the file you'd like to run:
+### Ejecutar Filebeat
+
+```
+mv filebeat.yml C:\Users\RicardoOrtega\Documents\filebeat-8.1.1-windows-x86_64
+cd C:\Users\RicardoOrtega\Documents\filebeat-8.1.1-windows-x86_64
+filebeat.exe -e 
+```
+
+### Ejecutar servicios
+
 ```
 python 01-app-uninstrumented.py
 python 02-app-instrumented.py
 python 03-app-instrumented-compression.py
 python 04-app-ecs-logging.py
+python 05-app-consumer.py
 ```
 
-### Running the Loadgenerator
-The loadgenerator is just a simple bash script that runs a curl request against each service in a loop. 
+### Ejecutar servicios
+```
+01-app-uninstrumented
+curl localhost:5001/endpoint1
+
+02-app-instrumented
+curl localhost:5002/endpoint1
+
+03-app-instrumented-compression
+curl localhost:5003/endpoint1
+
+04-app-ecs-logging
+curl localhost:5004/endpoint1
+
+05-app-consumer
+curl localhost:5005/consume
+```
+
+### Ejecutar el script de carga
+El script de carga hace peticiones a las 4 versiones del servicio en un bucle infinito. 
 
 ```
 sh loadgen.sh
 ```
 
 
-### Screenshots of Kibana
+### Capturas de Kibana
 
 ![screencapture-community-conference-kb-us-central1-gcp-cloud-es-io-9243-app-apm-services-04-app-ecs-logging-overview-2022-01-20-10_43_46](https://user-images.githubusercontent.com/11661400/150313736-05bf3ddf-1b82-40e8-94d0-948f04a75ecb.png)
 ![screencapture-community-conference-kb-us-central1-gcp-cloud-es-io-9243-app-apm-services-04-app-ecs-logging-transactions-view-2022-01-20-10_44_23](https://user-images.githubusercontent.com/11661400/150313846-bff9ae02-4d6c-4ef9-844e-ff1aa265a727.png)
