@@ -1,4 +1,4 @@
-### Overview
+### Demo
 
 Este repositorio contiene un pequeño servicio python usando el framework Flask. Tiene 4 versiones ditintas y 1 servicio consumidor.
 
@@ -10,7 +10,7 @@ Este repositorio contiene un pequeño servicio python usando el framework Flask.
 
 4 - Instrumentación avanzada (APM) y logs en formato ECS (logger).
 
-### Requirements
+### Requerimientos
 Tener docker instaldo y levantar una instancia de redis:
 
 ```
@@ -57,7 +57,7 @@ cd C:\Users\RicardoOrtega\Documents\filebeat-8.1.1-windows-x86_64
 filebeat.exe -e 
 ```
 
-### Ejecutar servicios
+### Iniciar servicios
 
 ```
 python 01-app-uninstrumented.py
@@ -67,7 +67,7 @@ python 04-app-ecs-logging.py
 python 05-app-consumer.py
 ```
 
-### Ejecutar servicios
+### Hacer peticiones a servicios
 ```
 01-app-uninstrumented
 curl localhost:5001/endpoint1
